@@ -1,0 +1,22 @@
+{
+  "name": "sdc-questions-and-answers",
+  "version": "1.0.0",
+  "description": "Questions and Answers service for Project Catwalk",
+  "main": "server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HR-ATX58-Team-Hyena/sdc-questions-and-answers.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HR-ATX58-Team-Hyena/sdc-questions-and-answers/issues"
+  },
+  "homepage": "https://github.com/HR-ATX58-Team-Hyena/sdc-questions-and-answers#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
