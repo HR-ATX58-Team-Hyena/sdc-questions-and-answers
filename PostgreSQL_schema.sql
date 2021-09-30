@@ -4,6 +4,7 @@
 
 -- SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- SET FOREIGN_KEY_CHECKS=0;
+DROP DATABASE IF EXISTS q_a;
 
 CREATE DATABASE q_a;
 
@@ -13,12 +14,12 @@ CREATE DATABASE q_a;
 -- Table 'product_index'
 --
 -- ---
+
 DROP TABLE IF EXISTS product_index;
 
-CREATE TABLE product_index (
-  id SERIAL,
-  PRIMARY KEY (id)
-);
+-- CREATE TABLE product_index (
+--   id SERIAL PRIMARY KEY
+-- );
 
 -- ---
 -- Table 'questions'
@@ -28,15 +29,15 @@ CREATE TABLE product_index (
 DROP TABLE IF EXISTS questions;
 
 CREATE TABLE questions (
-  id SERIAL,
+  id SERIAL NOT NULL PRIMARY KEY,
   product_id INTEGER NOT NULL,
-  body VARCHAR(1000) NOT NULL,
-  date_written TIMESTAMP ,
+  question_body VARCHAR(1000) NULL,
+  epoch_date BIGINT NOT NULL,
   asker_name VARCHAR(60) NOT NULL,
   asker_email VARCHAR(60) NOT NULL,
-  reported INTEGER NOT NULL DEFAULT 0,
-  helpful INTEGER NOT NULL DEFAULT 0,
-  PRIMARY KEY (id)
+  reported INTEGER DEFAULT 0,
+  question_helpfulness INTEGER NOT NULL DEFAULT 0,
+  date TIMESTAMPTZ NOT NULL DEFAULT current_timestamp
 );
 
 -- ---
@@ -47,15 +48,15 @@ CREATE TABLE questions (
 DROP TABLE IF EXISTS answers;
 
 CREATE TABLE answers (
-  id SERIAL,
+  id SERIAL PRIMARY KEY,
   question_id INTEGER,
   body VARCHAR(1000),
-  date_written TIMESTAMP,
+  epoch_date BIGINT NOT NULL,
   answerer_name VARCHAR(60),
   answerer_email VARCHAR(60),
-  reported BOOLEAN,
-  helpful INTEGER DEFAULT 0,
-  PRIMARY KEY (id)
+  reported INTEGER DEFAULT 0,
+  helpfulness INTEGER DEFAULT 0,
+  date TIMESTAMPTZ NOT NULL DEFAULT current_timestamp
 );
 
 -- ---
@@ -66,17 +67,16 @@ CREATE TABLE answers (
 DROP TABLE IF EXISTS photos;
 
 CREATE TABLE photos (
-  id SERIAL,
+  id SERIAL PRIMARY KEY,
   answer_id INTEGER,
-  url VARCHAR(500),
-  PRIMARY KEY (id)
-);
+  url VARCHAR(500)
+  );
 
 -- ---
 -- Foreign Keys
 -- ---
 
-ALTER TABLE questions ADD FOREIGN KEY (product_id) REFERENCES product_index (id);
+-- ALTER TABLE questions ADD FOREIGN KEY (product_id) REFERENCES product_index (id);
 ALTER TABLE answers ADD FOREIGN KEY (question_id) REFERENCES questions (id);
 ALTER TABLE photos ADD FOREIGN KEY (answer_id) REFERENCES answers (id);
 
