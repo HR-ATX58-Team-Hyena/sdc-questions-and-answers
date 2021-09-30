@@ -1,6 +1,8 @@
-const { Client } = require("pg");
-const fs = require("fs");
-const fastcsv = require("fast-csv");
+const { Pool } = require("pg");
 const config = require("./config.js");
 
-const client = new Client(config);
+const pool = new Pool(config);
+
+module.exports = {
+  pool,
+};

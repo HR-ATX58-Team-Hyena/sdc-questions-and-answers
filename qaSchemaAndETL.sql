@@ -77,8 +77,8 @@ CREATE TABLE photos (
 -- ---
 
 -- ALTER TABLE questions ADD FOREIGN KEY (product_id) REFERENCES product_index (id);
-ALTER TABLE answers ADD FOREIGN KEY (question_id) REFERENCES questions (id);
-ALTER TABLE photos ADD FOREIGN KEY (answer_id) REFERENCES answers (id);
+ALTER TABLE answers ADD FOREIGN KEY (question_id) REFERENCES questions (id) ON DELETE CASCADE;
+ALTER TABLE photos ADD FOREIGN KEY (answer_id) REFERENCES answers (id) ON DELETE CASCADE;
 
 -- ---
 -- ETL Questions
