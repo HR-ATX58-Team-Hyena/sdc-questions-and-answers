@@ -29,7 +29,7 @@ DROP TABLE IF EXISTS product_index;
 DROP TABLE IF EXISTS questions;
 
 CREATE TABLE questions (
-  id SERIAL NOT NULL PRIMARY KEY,
+  question_id SERIAL NOT NULL PRIMARY KEY,
   product_id INTEGER NOT NULL,
   question_body VARCHAR(1000) NULL,
   epoch_date BIGINT NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE questions (
   asker_email VARCHAR(60) NOT NULL,
   reported INTEGER DEFAULT 0,
   question_helpfulness INTEGER NOT NULL DEFAULT 0,
-  date TIMESTAMPTZ NOT NULL DEFAULT current_timestamp
+  question_date TIMESTAMPTZ NOT NULL DEFAULT current_timestamp
 );
 
 -- ---
@@ -77,18 +77,20 @@ CREATE TABLE photos (
 -- ---
 
 -- ALTER TABLE questions ADD FOREIGN KEY (product_id) REFERENCES product_index (id);
-ALTER TABLE answers ADD FOREIGN KEY (question_id) REFERENCES questions (id) ON DELETE CASCADE;
+ALTER TABLE answers ADD FOREIGN KEY (question_id) REFERENCES questions (question_id) ON DELETE CASCADE;
 ALTER TABLE photos ADD FOREIGN KEY (answer_id) REFERENCES answers (id) ON DELETE CASCADE;
 
 -- ---
 -- ETL Questions
 -- ---
 
-\COPY questions (id, product_id, question_body, epoch_date, asker_name, asker_email, reported, question_helpfulness) from '/Users/coryellerbroek/Desktop/HackReactor/sdc-questions-and-answers/datasets/sample_questions.csv' DELIMITER ',' CSV HEADER;
+\COPY questions (question_id, product_id, question_body, epoch_date, asker_name, asker_email, reported, question_helpfulness) from '/Users/coryellerbroek/Desktop/HackReactor/sdc-questions-and-answers/datasets/sample_questions.csv' DELIMITER ',' CSV HEADER;
 
-UPDATE questions SET date = to_timestamp(floor(epoch_date / 1000));
+UPDATE questions SET question_date = to_timestamp(floor(epoch_date / 1000));
 
 ALTER TABLE questions DROP COLUMN epoch_date;
+
+CREATE INDEX question_helpfulness_index ON questions (question_helpfulness);
 
 -- ---
 -- ETL Answers
@@ -100,11 +102,30 @@ UPDATE answers SET date = to_timestamp(floor(epoch_date / 1000));
 
 ALTER TABLE answers DROP COLUMN epoch_date;
 
+CREATE INDEX answer_helpfulness_index ON answers (helpfulness);
+
 -- ---
 -- ETL Photos
 -- ---
 
 \COPY photos (id, answer_id, url) from '/Users/coryellerbroek/Desktop/HackReactor/sdc-questions-and-answers/datasets/sample_answers_photos.csv' DELIMITER ',' CSV HEADER;
+
+
+-- ---
+-- Top 4 Questions
+-- ---
+-- CREATE TABLE top_4_questions (
+--     id SERIAL NOT NULL PRIMARY KEY,
+--   product_id INTEGER NOT NULL,
+--   question_body VARCHAR(1000) NULL,
+--   epoch_date BIGINT NOT NULL,
+--   asker_name VARCHAR(60) NOT NULL,
+--   asker_email VARCHAR(60) NOT NULL,
+--   reported INTEGER DEFAULT 0,
+--   question_helpfulness INTEGER NOT NULL DEFAULT 0,
+--   date TIMESTAMPTZ NOT NULL DEFAULT current_timestamp
+-- );
+
 
 -- ---
 -- Table Properties
