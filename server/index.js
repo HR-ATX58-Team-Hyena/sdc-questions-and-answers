@@ -62,7 +62,7 @@ app.put('/qa/questions/:question_id/helpful', (req, res) => {
 // report question
 // params: question_id
 app.put('/qa/questions/:question_id/report', (req, res) => {
-  rest.status(204).send();
+  res.status(204).send();
 });
 
 // mark answer helpful
