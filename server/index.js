@@ -9,24 +9,22 @@ app.use(express.json());
 
 // get questions
 // params: product_id, page, count
-app.get('/qa/questions', (req, res) => {
+app.get('/qa/questions/:product_id', (req, res) => {
+  console.log(req.params.product_id);
+
   getQuestions(
-    // req.params.product_id,
+    req.params.product_id,
     // req.params.page,
     // req.params.count,
-    1,
-    1,
-    2,
     (err, questionsList) => {
       if (err) {
         console.log('Failed to retrieve questions from db', err);
         res.status(404).send();
       } else {
-        console.log(questionsList);
+        res.send(questionsList.rows);
       }
     }
   );
-  res.send('hello');
 });
 
 // get answers

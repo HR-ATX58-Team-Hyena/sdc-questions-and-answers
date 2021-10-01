@@ -3,17 +3,18 @@ const config = require('./config.js');
 
 const pool = new Pool(config);
 
-const getQuestions = (product_id, page = 1, count = 4, callback) => {
-  const pageParam = (() => {
-    if (page === 1) {
-      return 1;
-    } else {
-      return page * count;
-    }
-  })();
+const getQuestions = (product_id, callback) => {
+  // page = 1, count = 4,
+  // const pageParam = (() => {
+  //   if (page === 1) {
+  //     return 1;
+  //   } else {
+  //     return page * count;
+  //   }
+  // })();
 
-  const params = [product_id, pageParam, count];
-
+  const params = [product_id];
+  // , pageParam, count
   console.log(params);
 
   const getQuestionsQueryString = `
@@ -23,9 +24,11 @@ const getQuestions = (product_id, page = 1, count = 4, callback) => {
     questions
   WHERE
     product_id = $1
-  OFFSET $2 ROWS
-  FETCH FIRST $3 ROW ONLY;
-  `;
+  AND
+    reported = 0
+    `;
+  // OFFSET $2 ROWS
+  // FETCH FIRST $3 ROW ONLY;
 
   pool.query(getQuestionsQueryString, params, (err, questionsList) => {
     if (err) {
@@ -36,10 +39,13 @@ const getQuestions = (product_id, page = 1, count = 4, callback) => {
   });
 };
 
+const getAnswers = (product_id, callback) => {};
+
 const addQuestion = () => {};
 
 module.exports = {
   pool,
   getQuestions,
+  getAnswers,
   addQuestion,
 };
