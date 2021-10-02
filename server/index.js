@@ -1,19 +1,31 @@
 const express = require('express');
+const cors = require('cors');
+const {
+  getQuestions,
+  getAnswers,
+  addAnswer,
+  addQuestion,
+  markAnswerAsHelpful,
+  markQuestionAsHelpful,
+  reportAnswer,
+  reportQuestion,
+} = require('../db/modules');
+
 const app = express();
 const port = 3000;
-const { pool, getQuestions } = require('../db');
 
+app.use(cors());
 app.use(express.json());
 
 // ROUTES
 
 // get questions
 // params: product_id, page, count
-app.get('/qa/questions/:product_id', (req, res) => {
+app.get('/qa/:product_id', (req, res) => {
   console.log(req.params.product_id);
-
+  const productId = req.params.product_id;
   getQuestions(
-    req.params.product_id,
+    productId,
     // req.params.page,
     // req.params.count,
     (err, questionsList) => {
@@ -21,7 +33,10 @@ app.get('/qa/questions/:product_id', (req, res) => {
         console.log('Failed to retrieve questions from db', err);
         res.status(404).send();
       } else {
-        res.send(questionsList.rows);
+        res.send({
+          product_id: productId,
+          results: questionsList.rows,
+        });
       }
     }
   );
@@ -33,17 +48,40 @@ app.get('/qa/questions/:product_id', (req, res) => {
 // query params:
 // page = req.query.page
 // count = req.query.count
-app.get('/qa/questions/:question_id/answers', (req, res) => {
-  console.log('params', req.params);
-  console.log('query', req.query);
-  res.send('get answer');
+app.get('/qa/:question_id/answers', (req, res) => {
+  getAnswers(
+    req.params.question_id,
+    req.query.page,
+    req.query.count,
+    (err, answersList) => {
+      if (err) {
+        console.log('Failed to retrieve answers from db', err);
+        res.status(404).send();
+      } else {
+        res.send(answersList);
+      }
+    }
+  );
 });
 
 // add question
-// body params: body text, name text, email text, product_id
-app.post('/qa/questions', (req, res) => {
-  console.log(req.body);
-  res.status(201).send('post question');
+// params: product_id
+// body params: body, name, email
+app.post('/qa/:product_id', (req, res) => {
+  // console.log('productid', req.params.product_id);
+  // console.log('body', req.body.body);
+  const productId = req.params.product_id;
+  const { body, name, email } = req.body;
+  console.log(body);
+  addQuestion(productId, body, name, email, (err, success) => {
+    if (err) {
+      console.log('Failed to add question', err);
+      res.status(404).send();
+    } else {
+      console.log('Successfully added question', success);
+      res.status(201).send();
+    }
+  });
 });
 
 // add answer
