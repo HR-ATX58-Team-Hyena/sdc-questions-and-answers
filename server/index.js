@@ -104,8 +104,17 @@ app.post('/qa/:question_id/answers', (req, res) => {
 
 // mark question as helpful
 // params: question_id
-app.put('/qa/questions/:question_id/helpful', (req, res) => {
-  res.status(204).send();
+app.put('/qa/question/:question_id/helpful', (req, res) => {
+  const questionId = req.params.question_id;
+  markQuestionAsHelpful(questionId, (err) => {
+    if (err) {
+      console.log('Failed to mark question as helpful', err);
+      res.status(404).send('Failed to mark question as helpful');
+    } else {
+      console.log('Successfully marked question as helpful');
+      res.status(204).send();
+    }
+  });
 });
 
 // report question
@@ -117,7 +126,16 @@ app.put('/qa/questions/:question_id/report', (req, res) => {
 // mark answer helpful
 // params: answer_id
 app.put('/qa/answers/:answer_id/helpful', (req, res) => {
-  res.status(204).send();
+  const answerId = req.params.answer_id;
+  markAnswerAsHelpful(answerId, (err) => {
+    if (err) {
+      console.log('Failed to mark answer as helpful', err);
+      res.status(404).send('Failed to mark answer as helpful');
+    } else {
+      console.log('Successfully marked answer as helpful');
+      res.status(204).send();
+    }
+  });
 });
 
 // report answer

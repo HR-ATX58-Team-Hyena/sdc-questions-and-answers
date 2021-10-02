@@ -10,13 +10,16 @@ const getAnswers = (questionId, page = 0, count = 5, callback) => {
     answer_id, body, date, answerer_name, helpfulness
   FROM
     questions
-  INNER JOIN answers ON questions.question_id = answers.question_id
+  INNER JOIN
+    answers ON questions.question_id = answers.question_id
   WHERE
     questions.question_id = $1
   AND
     answers.reported = 0
+  ORDER BY
+    helpfulness DESC
   OFFSET $2 ROWS
-  FETCH FIRST $3 ROW ONLY;
+  FETCH FIRST $3 ROW ONLY
   `;
 
   pool.query(getAnswersQueryString, answersParams, (err, answersData) => {
