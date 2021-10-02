@@ -87,8 +87,19 @@ app.post('/qa/:product_id', (req, res) => {
 // add answer
 // params: question_id
 // body params: body text, name text, email text, photos [text]
-app.post('/qa/questions/:question_id/answers', (req, res) => {
-  res.status(201).send();
+app.post('/qa/:question_id/answers', (req, res) => {
+  const productId = req.params.question_id;
+  const { body, name, email, photos } = req.body;
+  console.log(body);
+  addAnswer(productId, body, name, email, photos, (err) => {
+    if (err) {
+      console.log('Failed to add answer/photos', err);
+      res.status(404).send();
+    } else {
+      console.log('Successfully added answer/photos');
+      res.status(201).send();
+    }
+  });
 });
 
 // mark question as helpful

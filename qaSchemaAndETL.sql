@@ -100,8 +100,8 @@ SELECT setval(pg_get_serial_sequence('questions', 'question_id'), max(question_i
 \COPY answers (answer_id, question_id, body, epoch_date, answerer_name, answerer_email, reported, helpfulness) from '/Users/coryellerbroek/Desktop/HackReactor/sdc-questions-and-answers/datasets/sample_answers.csv' DELIMITER ',' CSV HEADER;
 
 UPDATE answers SET date = to_timestamp(floor(epoch_date / 1000));
-
 ALTER TABLE answers DROP COLUMN epoch_date;
+SELECT setval(pg_get_serial_sequence('answers', 'answer_id'), max(answer_id)) FROM answers;
 
 -- CREATE INDEX answer_helpfulness_index ON answers (helpfulness);
 -- CREATE INDEX question_id_answers_index ON answers (question_id);
@@ -110,6 +110,8 @@ ALTER TABLE answers DROP COLUMN epoch_date;
 -- ---
 
 \COPY photos (id, answer_id, url) from '/Users/coryellerbroek/Desktop/HackReactor/sdc-questions-and-answers/datasets/sample_answers_photos.csv' DELIMITER ',' CSV HEADER;
+
+SELECT setval(pg_get_serial_sequence('photos', 'id'), max(id)) FROM photos;
 
 -- CREATE INDEX answer_id_photos_index ON photos (answer_id);
 
