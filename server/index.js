@@ -20,7 +20,6 @@ app.use(express.json());
 // ROUTES
 
 // get questions
-// params: product_id, page, count
 app.get('/qa/:product_id', (req, res) => {
   console.log(req.params.product_id);
   const productId = req.params.product_id;
@@ -43,11 +42,6 @@ app.get('/qa/:product_id', (req, res) => {
 });
 
 // get answers
-// params:
-// question_id = req.params.question_id
-// query params:
-// page = req.query.page
-// count = req.query.count
 app.get('/qa/:question_id/answers', (req, res) => {
   getAnswers(
     req.params.question_id,
@@ -65,8 +59,6 @@ app.get('/qa/:question_id/answers', (req, res) => {
 });
 
 // add question
-// params: product_id
-// body params: body, name, email
 app.post('/qa/:product_id', (req, res) => {
   // console.log('productid', req.params.product_id);
   // console.log('body', req.body.body);
@@ -85,8 +77,6 @@ app.post('/qa/:product_id', (req, res) => {
 });
 
 // add answer
-// params: question_id
-// body params: body text, name text, email text, photos [text]
 app.post('/qa/:question_id/answers', (req, res) => {
   const productId = req.params.question_id;
   const { body, name, email, photos } = req.body;
@@ -103,7 +93,6 @@ app.post('/qa/:question_id/answers', (req, res) => {
 });
 
 // mark question as helpful
-// params: question_id
 app.put('/qa/question/:question_id/helpful', (req, res) => {
   const questionId = req.params.question_id;
   markQuestionAsHelpful(questionId, (err) => {
@@ -117,14 +106,7 @@ app.put('/qa/question/:question_id/helpful', (req, res) => {
   });
 });
 
-// report question
-// params: question_id
-app.put('/qa/questions/:question_id/report', (req, res) => {
-  res.status(204).send();
-});
-
 // mark answer helpful
-// params: answer_id
 app.put('/qa/answers/:answer_id/helpful', (req, res) => {
   const answerId = req.params.answer_id;
   markAnswerAsHelpful(answerId, (err) => {
@@ -138,10 +120,32 @@ app.put('/qa/answers/:answer_id/helpful', (req, res) => {
   });
 });
 
+// report question
+app.put('/qa/questions/:question_id/report', (req, res) => {
+  const questionId = req.params.question_id;
+  reportQuestion(questionId, (err) => {
+    if (err) {
+      console.log('Failed to report question', err);
+      res.status(404).send('Failed to report question');
+    } else {
+      console.log('Successfully reported question');
+      res.status(204).send();
+    }
+  });
+});
+
 // report answer
-// params: answer_id
 app.put('/qa/answers/:answer_id/report', (req, res) => {
-  res.status(204).send();
+  const answerId = req.params.answer_id;
+  reportAnswer(answerId, (err) => {
+    if (err) {
+      console.log('Failed to report answer', err);
+      res.status(404).send('Failed to report answer');
+    } else {
+      console.log('Successfully reported answer');
+      res.status(204).send();
+    }
+  });
 });
 
 app.listen(port, () => {

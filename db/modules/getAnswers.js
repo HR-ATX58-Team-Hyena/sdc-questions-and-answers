@@ -17,7 +17,7 @@ const getAnswers = (questionId, page = 0, count = 5, callback) => {
   AND
     answers.reported = 0
   ORDER BY
-    helpfulness DESC
+    answers.helpfulness DESC
   OFFSET $2 ROWS
   FETCH FIRST $3 ROW ONLY
   `;
