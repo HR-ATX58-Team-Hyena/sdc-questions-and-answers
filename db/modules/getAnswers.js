@@ -5,6 +5,7 @@ const getAnswers = (questionId, page = 0, count = 5, callback) => {
   const photosParams = [];
   const answersList = [];
   const answersParams = [questionId, offset, count];
+  console.log('answersParams', answersParams);
   const getAnswersQueryString = `
   SELECT
     answer_id, body, date, answerer_name, helpfulness
@@ -26,34 +27,36 @@ const getAnswers = (questionId, page = 0, count = 5, callback) => {
     if (err) {
       callback(err, null);
     } else {
-      answersData.rows.forEach((answer) => {
-        answersList.push({ ...answer, photos: [] });
-        photosParams.push(answer.answer_id);
-      });
-      const getAnswersPhotos = `
-        SELECT
-          answers.answer_id, photos.id, photos.url
-        FROM
-          answers
-        INNER JOIN photos ON answers.answer_id = photos.answer_id
-        WHERE
-          answers.answer_id IN (${photosParams.join(', ')});
-      `;
-      // photosParams,
-      pool.query(getAnswersPhotos, (err, photosData) => {
-        if (err) {
-          callback(err, null);
-        } else {
-          answersList.forEach((answer) => {
-            photosData.rows.forEach((photo) => {
-              if (answer.answer_id === photo.answer_id) {
-                answer.photos.push({
-                  id: photo.id,
-                  url: photo.url,
-                });
-              }
+      if (answersData.rows.length > 0) {
+        answersData.rows.forEach((answer) => {
+          answersList.push({ ...answer, photos: [] });
+          photosParams.push(answer.answer_id);
+        });
+        const getAnswersPhotos = `
+          SELECT
+            answers.answer_id, photos.id, photos.url
+          FROM
+            answers
+          INNER JOIN photos ON answers.answer_id = photos.answer_id
+          WHERE
+            answers.answer_id IN (${photosParams.join(', ')});
+        `;
+        console.log('photosParams', photosParams.join(', '));
+        pool.query(getAnswersPhotos, (err, photosData) => {
+          if (err) {
+            callback(err, null);
+          } else {
+            answersList.forEach((answer) => {
+              photosData.rows.forEach((photo) => {
+                if (answer.answer_id === photo.answer_id) {
+                  answer.photos.push({
+                    id: photo.id,
+                    url: photo.url,
+                  });
+                }
+              });
             });
-          });
+          }
           const res = {
             question: questionId,
             page,
@@ -61,8 +64,8 @@ const getAnswers = (questionId, page = 0, count = 5, callback) => {
             results: answersList,
           };
           callback(null, res);
-        }
-      });
+        });
+      }
     }
   });
 };

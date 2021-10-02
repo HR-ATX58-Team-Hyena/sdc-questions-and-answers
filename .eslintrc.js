@@ -13,5 +13,6 @@ module.exports = {
     'comma-dangle': 'off',
     'no-shadow': 'off',
     'object-curly-newline': 'off',
+    'no-lonely-if': 'off',
   },
 };
