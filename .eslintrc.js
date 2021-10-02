@@ -12,5 +12,6 @@ module.exports = {
     'no-console': 'off',
     'comma-dangle': 'off',
     'no-shadow': 'off',
+    'object-curly-newline': 'off',
   },
 };
