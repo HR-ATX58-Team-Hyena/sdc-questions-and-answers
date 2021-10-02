@@ -65,10 +65,23 @@ app.get('/qa/:question_id/answers', (req, res) => {
 });
 
 // add question
-// body params: body text, name text, email text, product_id
-app.post('/qa/questions', (req, res) => {
-  console.log(req.body);
-  res.status(201).send('post question');
+// params: product_id
+// body params: body, name, email
+app.post('/qa/:product_id', (req, res) => {
+  // console.log('productid', req.params.product_id);
+  // console.log('body', req.body.body);
+  const productId = req.params.product_id;
+  const { body, name, email } = req.body;
+  console.log(body);
+  addQuestion(productId, body, name, email, (err, success) => {
+    if (err) {
+      console.log('Failed to add question', err);
+      res.status(404).send();
+    } else {
+      console.log('Successfully added question', success);
+      res.status(201).send();
+    }
+  });
 });
 
 // add answer

@@ -2,17 +2,10 @@ const { pool } = require('../index');
 
 const getQuestions = (productId, callback) => {
   // page = 1, count = 4,
-  // const pageParam = (() => {
-  //   if (page === 1) {
-  //     return 1;
-  //   } else {
-  //     return page * count;
-  //   }
-  // })();
+  // const offset = page * count;
 
   const params = [productId];
   // , pageParam, count
-  // console.log(params);
 
   const getQuestionsQueryString = `
   SELECT

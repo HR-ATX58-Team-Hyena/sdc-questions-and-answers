@@ -29,7 +29,7 @@ DROP TABLE IF EXISTS product_index;
 DROP TABLE IF EXISTS questions;
 
 CREATE TABLE questions (
-  question_id SERIAL NOT NULL PRIMARY KEY,
+  question_id SERIAL PRIMARY KEY,
   product_id INTEGER NOT NULL,
   question_body VARCHAR(1000) NOT NULL,
   epoch_date BIGINT NOT NULL,
@@ -87,11 +87,11 @@ ALTER TABLE photos ADD FOREIGN KEY (answer_id) REFERENCES answers (answer_id) ON
 \COPY questions (question_id, product_id, question_body, epoch_date, asker_name, asker_email, reported, question_helpfulness) from '/Users/coryellerbroek/Desktop/HackReactor/sdc-questions-and-answers/datasets/sample_questions.csv' DELIMITER ',' CSV HEADER;
 
 UPDATE questions SET question_date = to_timestamp(floor(epoch_date / 1000));
-
 ALTER TABLE questions DROP COLUMN epoch_date;
+SELECT setval(pg_get_serial_sequence('questions', 'question_id'), max(question_id)) FROM questions;
 
-CREATE INDEX question_helpfulness_index ON questions (question_helpfulness);
-CREATE INDEX product_id_questions_index ON questions (product_id);
+-- CREATE INDEX question_helpfulness_index ON questions (question_helpfulness);
+-- CREATE INDEX product_id_questions_index ON questions (product_id);
 
 -- ---
 -- ETL Answers
@@ -103,15 +103,15 @@ UPDATE answers SET date = to_timestamp(floor(epoch_date / 1000));
 
 ALTER TABLE answers DROP COLUMN epoch_date;
 
-CREATE INDEX answer_helpfulness_index ON answers (helpfulness);
-CREATE INDEX question_id_answers_index ON answers (question_id);
+-- CREATE INDEX answer_helpfulness_index ON answers (helpfulness);
+-- CREATE INDEX question_id_answers_index ON answers (question_id);
 -- ---
 -- ETL Photos
 -- ---
 
 \COPY photos (id, answer_id, url) from '/Users/coryellerbroek/Desktop/HackReactor/sdc-questions-and-answers/datasets/sample_answers_photos.csv' DELIMITER ',' CSV HEADER;
 
-CREATE INDEX answer_id_photos_index ON photos (answer_id);
+-- CREATE INDEX answer_id_photos_index ON photos (answer_id);
 
 -- ---
 -- Top 4 Questions

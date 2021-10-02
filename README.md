@@ -50,7 +50,7 @@ Status: 200 OK
 
 Adds a question for the given product
 
-POST /qa/questions
+POST /qa
 
 Body Parameters
 
@@ -67,7 +67,7 @@ Status: 201 CREATED
 
 Adds an answer for the given question
 
-POST /qa/questions/:question_id/answers
+POST /qa/:question_id/answers
 
 Parameters
 
