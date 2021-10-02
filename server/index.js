@@ -14,9 +14,9 @@ app.use(express.json());
 // params: product_id, page, count
 app.get('/qa/:product_id', (req, res) => {
   console.log(req.params.product_id);
-
+  const productId = req.params.product_id;
   getQuestions(
-    req.params.product_id,
+    productId,
     // req.params.page,
     // req.params.count,
     (err, questionsList) => {
@@ -24,7 +24,10 @@ app.get('/qa/:product_id', (req, res) => {
         console.log('Failed to retrieve questions from db', err);
         res.status(404).send();
       } else {
-        res.send({ results: questionsList.rows });
+        res.send({
+          product_id: productId,
+          results: questionsList.rows,
+        });
       }
     }
   );

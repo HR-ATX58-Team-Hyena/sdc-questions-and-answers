@@ -19,7 +19,7 @@ const getQuestions = (productId, callback) => {
 
   const getQuestionsQueryString = `
   SELECT
-    question_id, question_body, question_date, asker_name, question_helpfulness
+    question_id, question_body, question_date, asker_name, question_helpfulness, reported
   FROM
     questions
   WHERE
@@ -39,12 +39,11 @@ const getQuestions = (productId, callback) => {
   });
 };
 
-const getAnswers = (productId, page = 0, count = 5, callback) => {
+const getAnswers = (questionId, page = 0, count = 5, callback) => {
   const offset = page * count;
   const photosParams = [];
   const answersList = [];
-  const answersParams = [productId, offset, count];
-  console.log(answersParams);
+  const answersParams = [questionId, offset, count];
   const getAnswersQueryString = `
   SELECT
     answer_id, body, date, answerer_name, helpfulness
@@ -52,7 +51,7 @@ const getAnswers = (productId, page = 0, count = 5, callback) => {
     questions
   INNER JOIN answers ON questions.question_id = answers.question_id
   WHERE
-    product_id = $1
+    questions.question_id = $1
   AND
     answers.reported = 0
   OFFSET $2 ROWS
@@ -66,7 +65,6 @@ const getAnswers = (productId, page = 0, count = 5, callback) => {
       answersData.rows.forEach((answer) => {
         answersList.push({ ...answer, photos: [] });
         photosParams.push(answer.answer_id);
-        console.log(photosParams);
       });
       const getAnswersPhotos = `
         SELECT
@@ -92,7 +90,13 @@ const getAnswers = (productId, page = 0, count = 5, callback) => {
               }
             });
           });
-          callback(null, answersList);
+          const res = {
+            question: questionId,
+            page,
+            count,
+            results: answersList,
+          };
+          callback(null, res);
         }
       });
     }

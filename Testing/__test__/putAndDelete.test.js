@@ -1,6 +1,6 @@
 const request = require('../commonTests');
-const fs = require('fs'); //file system
-const data = require('../data.json'); //data.json containing the global variables
+const fs = require('fs'); // file system
+const data = require('../data.json'); // data.json containing the global variables
 
 //Update user data
 describe('PUT user details', () => {
