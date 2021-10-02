@@ -1,6 +1,15 @@
 const express = require('express');
 const cors = require('cors');
-const { getQuestions, getAnswers } = require('../db/modules');
+const {
+  getQuestions,
+  getAnswers,
+  addAnswer,
+  addQuestion,
+  markAnswerAsHelpful,
+  markQuestionAsHelpful,
+  reportAnswer,
+  reportQuestion,
+} = require('../db/modules');
 
 const app = express();
 const port = 3000;
