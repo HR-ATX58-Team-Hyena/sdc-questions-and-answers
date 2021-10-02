@@ -48,7 +48,7 @@ CREATE TABLE questions (
 DROP TABLE IF EXISTS answers;
 
 CREATE TABLE answers (
-  id SERIAL NOT NULL PRIMARY KEY,
+  answer_id SERIAL NOT NULL PRIMARY KEY,
   question_id INTEGER NOT NULL,
   body VARCHAR(1000) NOT NULL,
   epoch_date BIGINT NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE photos (
 
 -- ALTER TABLE questions ADD FOREIGN KEY (product_id) REFERENCES product_index (id);
 ALTER TABLE answers ADD FOREIGN KEY (question_id) REFERENCES questions (question_id) ON DELETE CASCADE;
-ALTER TABLE photos ADD FOREIGN KEY (answer_id) REFERENCES answers (id) ON DELETE CASCADE;
+ALTER TABLE photos ADD FOREIGN KEY (answer_id) REFERENCES answers (answer_id) ON DELETE CASCADE;
 
 -- ---
 -- ETL Questions
@@ -97,14 +97,14 @@ CREATE INDEX product_id_questions_index ON questions (product_id);
 -- ETL Answers
 -- ---
 
-\COPY answers (id, question_id, body, epoch_date, answerer_name, answerer_email, reported, helpfulness) from '/Users/coryellerbroek/Desktop/HackReactor/sdc-questions-and-answers/datasets/sample_answers.csv' DELIMITER ',' CSV HEADER;
+\COPY answers (answer_id, question_id, body, epoch_date, answerer_name, answerer_email, reported, helpfulness) from '/Users/coryellerbroek/Desktop/HackReactor/sdc-questions-and-answers/datasets/sample_answers.csv' DELIMITER ',' CSV HEADER;
 
 UPDATE answers SET date = to_timestamp(floor(epoch_date / 1000));
 
 ALTER TABLE answers DROP COLUMN epoch_date;
 
 CREATE INDEX answer_helpfulness_index ON answers (helpfulness);
-CREATE INDEX product_id_answers_index ON answers (product_id);
+CREATE INDEX question_id_answers_index ON answers (question_id);
 -- ---
 -- ETL Photos
 -- ---
