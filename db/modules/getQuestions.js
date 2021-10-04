@@ -16,6 +16,8 @@ const getQuestions = (productId, callback) => {
     product_id = $1
   AND
     reported = 0
+  ORDER BY
+    question_helpfulness DESC
   `;
   // OFFSET $2 ROWS
   // FETCH FIRST $3 ROW ONLY;

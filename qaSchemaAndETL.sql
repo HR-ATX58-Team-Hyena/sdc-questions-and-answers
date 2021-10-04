@@ -84,7 +84,7 @@ ALTER TABLE photos ADD FOREIGN KEY (answer_id) REFERENCES answers (answer_id) ON
 -- ETL Questions
 -- ---
 
-\COPY questions (question_id, product_id, question_body, epoch_date, asker_name, asker_email, reported, question_helpfulness) from '/Users/coryellerbroek/Desktop/HackReactor/sdc-questions-and-answers/datasets/sample_questions.csv' DELIMITER ',' CSV HEADER;
+\COPY questions (question_id, product_id, question_body, epoch_date, asker_name, asker_email, reported, question_helpfulness) from '/Users/coryellerbroek/Desktop/HackReactor/sdc-questions-and-answers/datasets/questions.csv' DELIMITER ',' CSV HEADER;
 
 UPDATE questions SET question_date = to_timestamp(floor(epoch_date / 1000));
 ALTER TABLE questions DROP COLUMN epoch_date;
@@ -97,11 +97,11 @@ SELECT setval(pg_get_serial_sequence('questions', 'question_id'), max(question_i
 -- ETL Answers
 -- ---
 
-\COPY answers (answer_id, question_id, body, epoch_date, answerer_name, answerer_email, reported, helpfulness) from '/Users/coryellerbroek/Desktop/HackReactor/sdc-questions-and-answers/datasets/sample_answers.csv' DELIMITER ',' CSV HEADER;
+\COPY answers (answer_id, question_id, body, epoch_date, answerer_name, answerer_email, reported, helpfulness) from '/Users/coryellerbroek/Desktop/HackReactor/sdc-questions-and-answers/datasets/answers.csv' DELIMITER ',' CSV HEADER;
 
 UPDATE answers SET date = to_timestamp(floor(epoch_date / 1000));
-
 ALTER TABLE answers DROP COLUMN epoch_date;
+SELECT setval(pg_get_serial_sequence('answers', 'answer_id'), max(answer_id)) FROM answers;
 
 -- CREATE INDEX answer_helpfulness_index ON answers (helpfulness);
 -- CREATE INDEX question_id_answers_index ON answers (question_id);
@@ -109,7 +109,9 @@ ALTER TABLE answers DROP COLUMN epoch_date;
 -- ETL Photos
 -- ---
 
-\COPY photos (id, answer_id, url) from '/Users/coryellerbroek/Desktop/HackReactor/sdc-questions-and-answers/datasets/sample_answers_photos.csv' DELIMITER ',' CSV HEADER;
+\COPY photos (id, answer_id, url) from '/Users/coryellerbroek/Desktop/HackReactor/sdc-questions-and-answers/datasets/answers_photos.csv' DELIMITER ',' CSV HEADER;
+
+SELECT setval(pg_get_serial_sequence('photos', 'id'), max(id)) FROM photos;
 
 -- CREATE INDEX answer_id_photos_index ON photos (answer_id);
 
