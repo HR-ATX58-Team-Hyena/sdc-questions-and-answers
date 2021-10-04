@@ -5,7 +5,7 @@ config:
       arrivalRate: 1
       name: Get product questions
   payload:
-    path: 'productIds.csv'
+    path: 'reports/productIds.csv'
     fields:
       - 'productId'
 scenarios:
