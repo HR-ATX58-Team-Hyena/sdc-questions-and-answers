@@ -14,5 +14,6 @@ module.exports = {
     'no-shadow': 'off',
     'object-curly-newline': 'off',
     'no-lonely-if': 'off',
+    'no-undef': 'off',
   },
 };
