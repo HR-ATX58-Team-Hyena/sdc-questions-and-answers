@@ -9,7 +9,8 @@
   "scripts": {
     "start": "nodemon server/index.js",
     "test": "jest",
-    "test:watch": "jest --verbose --watchAll"
+    "test:watch": "jest --verbose --watchAll",
+    "loadtest": "artillery run -o tests/artillery/reports/ tests/artillery/q_aArtillery.yml"
   },
   "repository": {
     "type": "git",

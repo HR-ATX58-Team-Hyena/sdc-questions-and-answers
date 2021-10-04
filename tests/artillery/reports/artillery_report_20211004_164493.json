@@ -1,0 +1,437 @@
+{
+  "aggregate": {
+    "timestamp": "2021-10-04T21:44:13.939Z",
+    "scenariosCreated": 60,
+    "scenariosCompleted": 48,
+    "requestsCompleted": 108,
+    "latency": {
+      "min": 1,
+      "max": 73,
+      "median": 3,
+      "p95": 4,
+      "p99": 41.1
+    },
+    "rps": {
+      "count": 120,
+      "mean": 1.87
+    },
+    "scenarioDuration": {
+      "min": 5007.8,
+      "max": 5107.5,
+      "median": 5009.2,
+      "p95": 5014.7,
+      "p99": 5107.5
+    },
+    "scenarioCounts": {
+      "Retrieve product questions and answers": 60
+    },
+    "errors": {
+      "ETIMEDOUT": 12
+    },
+    "codes": {
+      "200": 108
+    },
+    "matches": 0,
+    "customStats": {},
+    "counters": {},
+    "scenariosAvoided": 0,
+    "phases": [
+      {
+        "duration": 60,
+        "arrivalRate": 1,
+        "name": "Get product questions"
+      }
+    ]
+  },
+  "intermediate": [
+    {
+      "timestamp": "2021-10-04T21:43:18.912Z",
+      "scenariosCreated": 9,
+      "scenariosCompleted": 4,
+      "requestsCompleted": 16,
+      "latency": {
+        "min": 1,
+        "max": 73,
+        "median": 3,
+        "p95": 56.5,
+        "p99": 73
+      },
+      "rps": {
+        "count": 18,
+        "mean": 2
+      },
+      "scenarioDuration": {
+        "min": 5008.9,
+        "max": 5107.5,
+        "median": 5010.2,
+        "p95": 5107.5,
+        "p99": 5107.5
+      },
+      "scenarioCounts": {
+        "Retrieve product questions and answers": 9
+      },
+      "errors": {},
+      "codes": {
+        "200": 16
+      },
+      "matches": 0,
+      "latencies": [
+        73000000,
+        18000000,
+        2000000,
+        2000000,
+        3000000,
+        3000000,
+        4000000,
+        2000000,
+        4000000,
+        4000000,
+        3000000,
+        2000000,
+        4000000,
+        2000000,
+        4000000,
+        1000000
+      ],
+      "customStats": {},
+      "counters": {},
+      "concurrency": 5,
+      "pendingRequests": 2,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2021-10-04T21:43:28.910Z",
+      "scenariosCreated": 10,
+      "scenariosCompleted": 6,
+      "requestsCompleted": 15,
+      "latency": {
+        "min": 2,
+        "max": 4,
+        "median": 3,
+        "p95": 4,
+        "p99": 4
+      },
+      "rps": {
+        "count": 20,
+        "mean": 2
+      },
+      "scenarioDuration": {
+        "min": 5009.1,
+        "max": 5009.7,
+        "median": 5009.3,
+        "p95": 5009.7,
+        "p99": 5009.7
+      },
+      "scenarioCounts": {
+        "Retrieve product questions and answers": 10
+      },
+      "errors": {
+        "ETIMEDOUT": 2
+      },
+      "codes": {
+        "200": 15
+      },
+      "matches": 0,
+      "latencies": [
+        3000000,
+        2000000,
+        3000000,
+        3000000,
+        3000000,
+        4000000,
+        2000000,
+        3000000,
+        4000000,
+        2000000,
+        3000000,
+        3000000,
+        3000000,
+        2000000,
+        3000000
+      ],
+      "customStats": {},
+      "counters": {},
+      "concurrency": 7,
+      "pendingRequests": 7,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2021-10-04T21:43:38.911Z",
+      "scenariosCreated": 10,
+      "scenariosCompleted": 7,
+      "requestsCompleted": 20,
+      "latency": {
+        "min": 1,
+        "max": 4,
+        "median": 2.5,
+        "p95": 4,
+        "p99": 4
+      },
+      "rps": {
+        "count": 20,
+        "mean": 2
+      },
+      "scenarioDuration": {
+        "min": 5007.8,
+        "max": 5010,
+        "median": 5009.4,
+        "p95": 5010,
+        "p99": 5010
+      },
+      "scenarioCounts": {
+        "Retrieve product questions and answers": 10
+      },
+      "errors": {
+        "ETIMEDOUT": 5
+      },
+      "codes": {
+        "200": 20
+      },
+      "matches": 0,
+      "latencies": [
+        4000000,
+        2000000,
+        3000000,
+        2000000,
+        3000000,
+        2000000,
+        3000000,
+        2000000,
+        3000000,
+        2000000,
+        4000000,
+        2000000,
+        3000000,
+        2000000,
+        4000000,
+        2000000,
+        3000000,
+        2000000,
+        3000000,
+        1000000
+      ],
+      "customStats": {},
+      "counters": {},
+      "concurrency": 5,
+      "pendingRequests": 7,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2021-10-04T21:43:48.910Z",
+      "scenariosCreated": 10,
+      "scenariosCompleted": 8,
+      "requestsCompleted": 16,
+      "latency": {
+        "min": 1,
+        "max": 4,
+        "median": 3,
+        "p95": 4,
+        "p99": 4
+      },
+      "rps": {
+        "count": 20,
+        "mean": 2
+      },
+      "scenarioDuration": {
+        "min": 5008.1,
+        "max": 5010.5,
+        "median": 5009.2,
+        "p95": 5010.5,
+        "p99": 5010.5
+      },
+      "scenarioCounts": {
+        "Retrieve product questions and answers": 10
+      },
+      "errors": {},
+      "codes": {
+        "200": 16
+      },
+      "matches": 0,
+      "latencies": [
+        3000000,
+        4000000,
+        1000000,
+        3000000,
+        4000000,
+        2000000,
+        2000000,
+        2000000,
+        3000000,
+        1000000,
+        3000000,
+        2000000,
+        3000000,
+        4000000,
+        2000000,
+        4000000
+      ],
+      "customStats": {},
+      "counters": {},
+      "concurrency": 7,
+      "pendingRequests": 11,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2021-10-04T21:43:58.911Z",
+      "scenariosCreated": 10,
+      "scenariosCompleted": 8,
+      "requestsCompleted": 19,
+      "latency": {
+        "min": 1,
+        "max": 4,
+        "median": 2,
+        "p95": 4,
+        "p99": 4
+      },
+      "rps": {
+        "count": 20,
+        "mean": 2
+      },
+      "scenarioDuration": {
+        "min": 5007.8,
+        "max": 5011.8,
+        "median": 5008.5,
+        "p95": 5011.8,
+        "p99": 5011.8
+      },
+      "scenarioCounts": {
+        "Retrieve product questions and answers": 10
+      },
+      "errors": {
+        "ETIMEDOUT": 4
+      },
+      "codes": {
+        "200": 19
+      },
+      "matches": 0,
+      "latencies": [
+        4000000,
+        2000000,
+        3000000,
+        1000000,
+        4000000,
+        2000000,
+        2000000,
+        1000000,
+        3000000,
+        1000000,
+        3000000,
+        1000000,
+        4000000,
+        2000000,
+        4000000,
+        2000000,
+        4000000,
+        2000000,
+        3000000
+      ],
+      "customStats": {},
+      "counters": {},
+      "concurrency": 5,
+      "pendingRequests": 12,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2021-10-04T21:44:08.908Z",
+      "scenariosCreated": 10,
+      "scenariosCompleted": 9,
+      "requestsCompleted": 20,
+      "latency": {
+        "min": 1,
+        "max": 18,
+        "median": 3,
+        "p95": 11,
+        "p99": 18
+      },
+      "rps": {
+        "count": 20,
+        "mean": 2
+      },
+      "scenarioDuration": {
+        "min": 5007.9,
+        "max": 5010.2,
+        "median": 5009.2,
+        "p95": 5010.2,
+        "p99": 5010.2
+      },
+      "scenarioCounts": {
+        "Retrieve product questions and answers": 10
+      },
+      "errors": {
+        "ETIMEDOUT": 1
+      },
+      "codes": {
+        "200": 20
+      },
+      "matches": 0,
+      "latencies": [
+        3000000,
+        3000000,
+        3000000,
+        1000000,
+        4000000,
+        2000000,
+        3000000,
+        1000000,
+        4000000,
+        2000000,
+        4000000,
+        2000000,
+        3000000,
+        2000000,
+        4000000,
+        2000000,
+        4000000,
+        3000000,
+        18000000,
+        2000000
+      ],
+      "customStats": {},
+      "counters": {},
+      "concurrency": 5,
+      "pendingRequests": 12,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2021-10-04T21:44:13.937Z",
+      "scenariosCreated": 1,
+      "scenariosCompleted": 6,
+      "requestsCompleted": 2,
+      "latency": {
+        "min": 2,
+        "max": 4,
+        "median": 3,
+        "p95": 4,
+        "p99": 4
+      },
+      "rps": {
+        "count": 2,
+        "mean": 0.4
+      },
+      "scenarioDuration": {
+        "min": 5009.6,
+        "max": 5023.8,
+        "median": 5010.9,
+        "p95": 5023.8,
+        "p99": 5023.8
+      },
+      "scenarioCounts": {
+        "Retrieve product questions and answers": 1
+      },
+      "errors": {},
+      "codes": {
+        "200": 2
+      },
+      "matches": 0,
+      "latencies": [
+        4000000,
+        2000000
+      ],
+      "customStats": {},
+      "counters": {},
+      "concurrency": 0,
+      "pendingRequests": 12,
+      "scenariosAvoided": 0
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+config:
+  target: 'http:localhost:3000/qa'
+  phases:
+    - duration: 60
+      arrivalRate: 1
+      name: Get product questions
+  payload:
+    path: 'productIds.csv'
+    fields:
+      - 'productId'
+scenarios:
+  - name: 'Retrieve product questions and answers'
+    flow:
+      - get:
+          url: '/{{ productId }}'
+          capture:
+            - json: '$.results[0].question_id'
+              as: 'questionId'
+      - get:
+          url: '/{{ questionId }}/answers'
+      - think: 5
