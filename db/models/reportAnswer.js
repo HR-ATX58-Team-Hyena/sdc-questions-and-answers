@@ -2,7 +2,6 @@ const { pool } = require('../index');
 
 const reportAnswer = (answerId, callback) => {
   const params = [answerId];
-  console.log(params);
   const reportAnswerQueryString = `
   UPDATE
     answers

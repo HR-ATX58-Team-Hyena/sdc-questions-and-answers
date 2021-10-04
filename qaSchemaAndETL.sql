@@ -1,9 +1,3 @@
--- ---
--- Globals
--- ---
-
--- SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
--- SET FOREIGN_KEY_CHECKS=0;
 DROP DATABASE IF EXISTS q_a;
 
 CREATE DATABASE q_a;
@@ -11,19 +5,7 @@ CREATE DATABASE q_a;
 \c q_a;
 
 -- ---
--- Table 'product_index'
---
--- ---
-
-DROP TABLE IF EXISTS product_index;
-
--- CREATE TABLE product_index (
---   id SERIAL PRIMARY KEY
--- );
-
--- ---
 -- Table 'questions'
---
 -- ---
 
 DROP TABLE IF EXISTS questions;
@@ -42,7 +24,6 @@ CREATE TABLE questions (
 
 -- ---
 -- Table 'answers'
---
 -- ---
 
 DROP TABLE IF EXISTS answers;
@@ -61,7 +42,6 @@ CREATE TABLE answers (
 
 -- ---
 -- Table 'photos'
---
 -- ---
 
 DROP TABLE IF EXISTS photos;
@@ -76,7 +56,6 @@ CREATE TABLE photos (
 -- Foreign Keys
 -- ---
 
--- ALTER TABLE questions ADD FOREIGN KEY (product_id) REFERENCES product_index (id);
 ALTER TABLE answers ADD FOREIGN KEY (question_id) REFERENCES questions (question_id) ON DELETE CASCADE;
 ALTER TABLE photos ADD FOREIGN KEY (answer_id) REFERENCES answers (answer_id) ON DELETE CASCADE;
 
@@ -90,8 +69,8 @@ UPDATE questions SET question_date = to_timestamp(floor(epoch_date / 1000));
 ALTER TABLE questions DROP COLUMN epoch_date;
 SELECT setval(pg_get_serial_sequence('questions', 'question_id'), max(question_id)) FROM questions;
 
--- CREATE INDEX question_helpfulness_index ON questions (question_helpfulness);
--- CREATE INDEX product_id_questions_index ON questions (product_id);
+CREATE INDEX question_helpfulness_index ON questions (question_helpfulness);
+CREATE INDEX product_id_questions_index ON questions (product_id);
 
 -- ---
 -- ETL Answers
@@ -103,8 +82,9 @@ UPDATE answers SET date = to_timestamp(floor(epoch_date / 1000));
 ALTER TABLE answers DROP COLUMN epoch_date;
 SELECT setval(pg_get_serial_sequence('answers', 'answer_id'), max(answer_id)) FROM answers;
 
--- CREATE INDEX answer_helpfulness_index ON answers (helpfulness);
--- CREATE INDEX question_id_answers_index ON answers (question_id);
+CREATE INDEX answer_helpfulness_index ON answers (helpfulness);
+CREATE INDEX question_id_answers_index ON answers (question_id);
+
 -- ---
 -- ETL Photos
 -- ---
@@ -113,7 +93,7 @@ SELECT setval(pg_get_serial_sequence('answers', 'answer_id'), max(answer_id)) FR
 
 SELECT setval(pg_get_serial_sequence('photos', 'id'), max(id)) FROM photos;
 
--- CREATE INDEX answer_id_photos_index ON photos (answer_id);
+CREATE INDEX answer_id_photos_index ON photos (answer_id);
 
 -- ---
 -- Top 4 Questions
@@ -139,16 +119,3 @@ SELECT setval(pg_get_serial_sequence('photos', 'id'), max(id)) FROM photos;
 -- ALTER TABLE answers ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE photos ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE product_index ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
--- ---
--- Test Data
--- ---
-
--- INSERT INTO questions (question_id,product_id,email,question_body,question_date,asker_name,question_helpfulness,reported) VALUES
--- ('','','','','','','','');
--- INSERT INTO answers (answer_id,question_id,email,body,date,answerer_name,helpfulness) VALUES
--- ('','','','','','','');
--- INSERT INTO photos (photo_id,answer_id,url) VALUES
--- ('','','');
--- INSERT INTO product_index (product_id) VALUES
--- ('');
