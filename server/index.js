@@ -21,7 +21,6 @@ app.use(express.json());
 
 // get questions
 app.get('/qa/:product_id', (req, res) => {
-  console.log(req.params.product_id);
   const productId = req.params.product_id;
   getQuestions(
     productId,
@@ -64,7 +63,6 @@ app.post('/qa/:product_id', (req, res) => {
   // console.log('body', req.body.body);
   const productId = req.params.product_id;
   const { body, name, email } = req.body;
-  console.log(body);
   addQuestion(productId, body, name, email, (err, success) => {
     if (err) {
       console.log('Failed to add question', err);
@@ -80,7 +78,6 @@ app.post('/qa/:product_id', (req, res) => {
 app.post('/qa/:question_id/answers', (req, res) => {
   const productId = req.params.question_id;
   const { body, name, email, photos } = req.body;
-  console.log(body);
   addAnswer(productId, body, name, email, photos, (err) => {
     if (err) {
       console.log('Failed to add answer/photos', err);
