@@ -4,25 +4,11 @@
   "description": "Questions and Answers service for Project Catwalk",
   "main": "server/index.js",
   "jest": {
-    "verbose": true,
-    "testSequencer": "testing/testSequencer.js",
-    "coverageDirectory": "testing/my_reports/",
-    "coverageReporters": [
-      "html",
-      "text"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 100,
-        "functions": 100,
-        "lines": 100,
-        "statements": 100
-      }
-    }
+    "verbose": true
   },
   "scripts": {
     "start": "nodemon server/index.js",
-    "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 jest --reporters default jest-stare --coverage --detectOpenHandles --runInBand --testTimeout=60000",
+    "test": "jest",
     "test:watch": "jest --verbose --watchAll"
   },
   "repository": {

@@ -5,7 +5,6 @@ const getAnswers = (questionId, page = 0, count = 5, callback) => {
   const photosParams = [];
   const answersList = [];
   const answersParams = [questionId, offset, count];
-  console.log('answersParams', answersParams);
   const getAnswersQueryString = `
   SELECT
     answer_id, body, date, answerer_name, helpfulness
