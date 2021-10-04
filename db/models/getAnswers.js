@@ -63,6 +63,8 @@ const getAnswers = (questionId, page = 0, count = 5, callback) => {
           };
           callback(null, res);
         });
+      } else {
+        callback(null, answersData.rows);
       }
     }
   });
