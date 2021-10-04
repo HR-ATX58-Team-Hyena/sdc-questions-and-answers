@@ -1,11 +1,10 @@
-const { getQuestions } = require('../db/modules');
+const { getQuestions } = require('../db/models');
 
-test('Should retrieve list of questions', (done) => {
+test('Should retrieve a list of questions', (done) => {
   function callback(err, data) {
     try {
       const questionData = data.rows[0];
       expect(err).toBe(null);
-      console.log(data.rows[0]);
       expect(questionData).toHaveProperty(
         'asker_name',
         'question_body',

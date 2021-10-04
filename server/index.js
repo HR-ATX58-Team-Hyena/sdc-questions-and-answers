@@ -9,7 +9,7 @@ const {
   markQuestionAsHelpful,
   reportAnswer,
   reportQuestion,
-} = require('../db/modules');
+} = require('../db/models');
 
 const app = express();
 const port = 3000;

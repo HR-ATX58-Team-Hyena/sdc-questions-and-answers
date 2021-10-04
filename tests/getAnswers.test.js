@@ -1,14 +1,22 @@
-const { getAnswers } = require('../db/modules');
+const { getAnswers } = require('../db/models');
 
-test('should report a question', (done) => {
+test('Should retrieve a list of answers', (done) => {
   function callback(err, data) {
     try {
+      const answerData = data.results[0];
       expect(err).toBe(null);
-      expect(data.command).toBe('UPDATE');
+      expect(answerData).toHaveProperty(
+        'answer_id',
+        'answerer_name',
+        'body',
+        'date',
+        'helpfulness',
+        'photos'
+      );
       done();
     } catch (error) {
       done(error);
     }
   }
-  getAnswers(1, callback);
+  getAnswers(1, null, null, callback);
 });

@@ -1,6 +1,6 @@
-const { reportQuestion } = require('../db/modules');
+const { reportAnswer } = require('../db/models');
 
-test('should report a question', (done) => {
+test('Should report a question', (done) => {
   function callback(err, data) {
     try {
       expect(err).toBe(null);
@@ -10,5 +10,5 @@ test('should report a question', (done) => {
       done(error);
     }
   }
-  reportQuestion(1, callback);
+  reportAnswer(1, callback);
 });

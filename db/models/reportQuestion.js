@@ -16,7 +16,6 @@ const reportQuestion = (questionId, callback) => {
       callback(err, null);
     } else {
       callback(null, success);
-      console.log(success);
     }
   });
 };
