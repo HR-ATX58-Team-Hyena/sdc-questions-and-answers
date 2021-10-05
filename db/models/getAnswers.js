@@ -7,16 +7,27 @@ const getAnswers = (questionId, page = 0, count = 5, callback) => {
   const answersParams = [questionId, offset, count];
   const getAnswersQueryString = `
   SELECT
+<<<<<<< HEAD
     answers.answer_id, body, date, answerer_name, helpfulness, photos.id, photos.url
   FROM
     questions
   INNER JOIN
     answers ON questions.question_id = answers.question_id
   LEFT OUTER JOIN photos ON answers.answer_id = photos.answer_id
+=======
+    answers.answer_id, body, date, answerer_name, helpfulness,
+    ARRAY_AGG (
+      json_build_object ('id', photos.id, 'url', photos.url)) photos
+  FROM
+    answers
+  INNER JOIN photos ON answers.answer_id = photos.answer_id
+>>>>>>> main
   WHERE
-    questions.question_id = $1
+    answers.question_id = $1
   AND
     answers.reported = 0
+  GROUP BY
+    answers.answer_id
   ORDER BY
     answers.helpfulness DESC
   OFFSET $2 ROWS
@@ -65,24 +76,24 @@ const getAnswers = (questionId, page = 0, count = 5, callback) => {
       //     callback(null, res);
       //   });
       // }
-      let response = [];
-      answersData.rows.forEach((answerData) => {
-        let answer = {};
-        answer.answer_Id = answerData.answer_id;
-        answer.body = answerData.body;
-        answer.date = answerData.date;
-        answer.answerer_name = answerData.answerId;
-        answer.helpfulness = answerData.helpfulness;
-        answer.photos;
-      });
-      const res = {
-        question: questionId,
-        page,
-        count,
-        results: {
-          and,
-        },
-      };
+      // let response = [];
+      // answersData.rows.forEach((answerData) => {
+      //   let answer = {};
+      //   answer.answer_Id = answerData.answer_id;
+      //   answer.body = answerData.body;
+      //   answer.date = answerData.date;
+      //   answer.answerer_name = answerData.answerId;
+      //   answer.helpfulness = answerData.helpfulness;
+      //   answer.photos = answerData.photos;
+      // });
+      // const res = {
+      //   question: questionId,
+      //   page,
+      //   count,
+      //   results: {
+      //     and,
+      //   },
+      // };
       console.log(answersData);
       callback(null, answersData);
     }
