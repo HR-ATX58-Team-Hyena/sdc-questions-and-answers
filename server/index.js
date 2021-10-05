@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const redis = require('redis');
 const {
   getQuestions,
   getAnswers,
@@ -11,64 +12,100 @@ const {
   reportQuestion,
 } = require('../db/models');
 
+const client = redis.createClient();
 const app = express();
 const port = 3000;
 
 app.use(cors());
 app.use(express.json());
 
+client.on('connect', () => {
+  console.log('Connected to cache');
+});
+
 // ROUTES
 
 // get questions
 app.get('/qa/:product_id', (req, res) => {
-  const productId = req.params.product_id;
-  getQuestions(
-    productId,
-    // req.params.page,
-    // req.params.count,
-    (err, questionsList) => {
+  try {
+    client.get(JSON.stringify(req.params), (err, questionsData) => {
       if (err) {
-        console.log('Failed to retrieve questions from db', err);
-        res.status(404).send();
-      } else {
-        res.send({
-          product_id: productId,
-          results: questionsList.rows,
-        });
+        console.error(err);
       }
-    }
-  );
+      if (questionsData) {
+        res.send(JSON.parse(questionsData));
+      } else {
+        getQuestions(
+          req.params.product_id,
+          req.params.page,
+          req.params.count,
+          (err, questionsList) => {
+            if (err) {
+              console.log('Failed to retrieve questions from db', err);
+              res.status(404).send();
+            } else {
+              client.setex(
+                JSON.stringify(req.params),
+                172800,
+                JSON.stringify(questionsList)
+              );
+              res.send(questionsList);
+            }
+          }
+        );
+      }
+    });
+  } catch (err) {
+    res.status(500).send({ error: err.message });
+  }
 });
 
 // get answers
 app.get('/qa/:question_id/answers', (req, res) => {
-  getAnswers(
-    req.params.question_id,
-    req.query.page,
-    req.query.count,
-    (err, answersList) => {
+  try {
+    client.get(JSON.stringify(req.params), (err, answersData) => {
       if (err) {
-        console.log('Failed to retrieve answers from db', err);
-        res.status(404).send();
-      } else {
-        res.send(answersList);
+        console.error(err);
       }
-    }
-  );
+      if (answersData) {
+        res.send(JSON.parse(answersData));
+      } else {
+        getAnswers(
+          req.params.question_id,
+          req.query.page,
+          req.query.count,
+          (err, answersList) => {
+            if (err) {
+              console.log('Failed to retrieve answers from db', err);
+              res.status(404).send();
+            } else {
+              client.setex(
+                JSON.stringify(req.params),
+                172800,
+                JSON.stringify(answersList)
+              );
+              res.send(answersList);
+            }
+          }
+        );
+      }
+    });
+  } catch (err) {
+    res.status(500).send({ error: err.message });
+  }
 });
 
 // add question
 app.post('/qa/:product_id', (req, res) => {
-  // console.log('productid', req.params.product_id);
-  // console.log('body', req.body.body);
+  // needs to delete questions in redis for current productId
   const productId = req.params.product_id;
   const { body, name, email } = req.body;
-  addQuestion(productId, body, name, email, (err, success) => {
+  addQuestion(productId, body, name, email, (err) => {
     if (err) {
       console.log('Failed to add question', err);
       res.status(404).send();
     } else {
-      console.log('Successfully added question', success);
+      client.del(JSON.stringify(req.params));
       res.status(201).send();
     }
   });
@@ -83,7 +120,7 @@ app.post('/qa/:question_id/answers', (req, res) => {
       console.log('Failed to add answer/photos', err);
       res.status(404).send();
     } else {
-      console.log('Successfully added answer/photos');
+      client.del(JSON.stringify(req.params));
       res.status(201).send();
     }
   });
@@ -97,7 +134,7 @@ app.put('/qa/question/:question_id/helpful', (req, res) => {
       console.log('Failed to mark question as helpful', err);
       res.status(404).send('Failed to mark question as helpful');
     } else {
-      console.log('Successfully marked question as helpful');
+      client.del(JSON.stringify(req.params));
       res.status(204).send();
     }
   });
@@ -111,7 +148,7 @@ app.put('/qa/answers/:answer_id/helpful', (req, res) => {
       console.log('Failed to mark answer as helpful', err);
       res.status(404).send('Failed to mark answer as helpful');
     } else {
-      console.log('Successfully marked answer as helpful');
+      client.del(JSON.stringify(req.params));
       res.status(204).send();
     }
   });
@@ -125,7 +162,7 @@ app.put('/qa/questions/:question_id/report', (req, res) => {
       console.log('Failed to report question', err);
       res.status(404).send('Failed to report question');
     } else {
-      console.log('Successfully reported question');
+      client.del(JSON.stringify(req.params));
       res.status(204).send();
     }
   });
@@ -139,7 +176,7 @@ app.put('/qa/answers/:answer_id/report', (req, res) => {
       console.log('Failed to report answer', err);
       res.status(404).send('Failed to report answer');
     } else {
-      console.log('Successfully reported answer');
+      client.del(JSON.stringify(req.params));
       res.status(204).send();
     }
   });
