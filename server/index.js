@@ -27,44 +27,74 @@ client.on('connect', () => {
 
 // get questions
 app.get('/qa/:product_id', (req, res) => {
-  const productId = req.params.product_id;
-  // if productId exists in Redis, return value
-  // otherwise, send db query
-  // store db query in Redis with productId as key
-  questionsCache.exists(productId);
-  getQuestions(
-    productId,
-    // req.params.page,
-    // req.params.count,
-    (err, questionsList) => {
+  try {
+    client.get(JSON.stringify(req.params), (err, questionsData) => {
       if (err) {
-        console.log('Failed to retrieve questions from db', err);
-        res.status(404).send();
-      } else {
-        res.send({
-          product_id: productId,
-          results: questionsList.rows,
-        });
+        console.error(err);
       }
-    }
-  );
+      if (questionsData) {
+        console.log('retrieved from cache');
+        res.send(JSON.parse(questionsData));
+      } else {
+        getQuestions(
+          req.params.product_id,
+          // req.params.page,
+          // req.params.count,
+          (err, questionsList) => {
+            if (err) {
+              console.log('Failed to retrieve questions from db', err);
+              res.status(404).send();
+            } else {
+              client.setex(
+                JSON.stringify(req.params),
+                172800,
+                JSON.stringify(questionsList)
+              );
+              res.send(questionsList);
+            }
+          }
+        );
+      }
+    });
+  } catch (err) {
+    res.status(500).send({ error: err.message });
+  }
 });
 
 // get answers
 app.get('/qa/:question_id/answers', (req, res) => {
-  getAnswers(
-    req.params.question_id,
-    req.query.page,
-    req.query.count,
-    (err, answersList) => {
+  try {
+    client.get(JSON.stringify(req.params), (err, answersData) => {
       if (err) {
-        console.log('Failed to retrieve answers from db', err);
-        res.status(404).send();
-      } else {
-        res.send(answersList);
+        console.error(err);
       }
-    }
-  );
+      if (answersData) {
+        console.log('retrieved from cache');
+        res.send(JSON.parse(answersData));
+      } else {
+        getAnswers(
+          req.params.question_id,
+          req.query.page,
+          req.query.count,
+          (err, answersList) => {
+            if (err) {
+              console.log('Failed to retrieve answers from db', err);
+              res.status(404).send();
+            } else {
+              client.setex(
+                JSON.stringify(req.params),
+                172800,
+                JSON.stringify(answersList)
+              );
+              res.send(answersList);
+            }
+          }
+        );
+      }
+    });
+  } catch (err) {
+    res.status(500).send({ error: err.message });
+  }
 });
 
 // add question

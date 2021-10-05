@@ -6,7 +6,7 @@ const getQuestions = (productId, callback) => {
 
   const params = [productId];
   // , pageParam, count
-
+  const questionsList = {};
   const getQuestionsQueryString = `
   SELECT
     question_id, question_body, question_date, asker_name, question_helpfulness, reported
@@ -26,7 +26,9 @@ const getQuestions = (productId, callback) => {
     if (err) {
       callback(err, null);
     } else {
-      callback(null, questionsData);
+      questionsList.product_id = productId;
+      questionsList.results = questionsData.rows;
+      callback(null, questionsList);
     }
   });
 };
