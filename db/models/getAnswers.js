@@ -6,12 +6,21 @@ const getAnswers = (questionId, page = 0, count = 5, callback) => {
   const answersParams = [questionId, offset, count];
   const getAnswersQueryString = `
   SELECT
+<<<<<<< HEAD
+    answers.answer_id, body, date, answerer_name, helpfulness, photos.id, photos.url
+  FROM
+    questions
+  INNER JOIN
+    answers ON questions.question_id = answers.question_id
+  LEFT OUTER JOIN photos ON answers.answer_id = photos.answer_id
+=======
     answers.answer_id, body, date, answerer_name, helpfulness,
     ARRAY_AGG (
       json_build_object ('id', photos.id, 'url', photos.url)) photos
   FROM
     answers
   INNER JOIN photos ON answers.answer_id = photos.answer_id
+>>>>>>> main
   WHERE
     answers.question_id = $1
   AND
