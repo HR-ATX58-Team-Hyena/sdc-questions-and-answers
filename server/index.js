@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const redis = require('redis');
 const {
   getQuestions,
   getAnswers,
@@ -11,17 +12,26 @@ const {
   reportQuestion,
 } = require('../db/models');
 
+const client = redis.createClient();
 const app = express();
 const port = 3000;
 
 app.use(cors());
 app.use(express.json());
 
+client.on('connect', () => {
+  console.log('Connected to cache');
+});
+
 // ROUTES
 
 // get questions
 app.get('/qa/:product_id', (req, res) => {
   const productId = req.params.product_id;
+  // if productId exists in Redis, return value
+  // otherwise, send db query
+  // store db query in Redis with productId as key
+  questionsCache.exists(productId);
   getQuestions(
     productId,
     // req.params.page,
@@ -59,8 +69,7 @@ app.get('/qa/:question_id/answers', (req, res) => {
 
 // add question
 app.post('/qa/:product_id', (req, res) => {
-  // console.log('productid', req.params.product_id);
-  // console.log('body', req.body.body);
+  // needs to delete questions in redis for current productId
   const productId = req.params.product_id;
   const { body, name, email } = req.body;
   addQuestion(productId, body, name, email, (err, success) => {
