@@ -104,6 +104,7 @@ dist
 
 # TernJS port file
 .tern-port
+
 db/config.js
 tests/artillery/reports
-tests/artillery/productIds.csv
+vscode
