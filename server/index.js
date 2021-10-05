@@ -33,13 +33,12 @@ app.get('/qa/:product_id', (req, res) => {
         console.error(err);
       }
       if (questionsData) {
-        console.log('retrieved from cache');
         res.send(JSON.parse(questionsData));
       } else {
         getQuestions(
           req.params.product_id,
-          // req.params.page,
-          // req.params.count,
+          req.params.page,
+          req.params.count,
           (err, questionsList) => {
             if (err) {
               console.log('Failed to retrieve questions from db', err);
@@ -69,7 +68,6 @@ app.get('/qa/:question_id/answers', (req, res) => {
         console.error(err);
       }
       if (answersData) {
-        console.log('retrieved from cache');
         res.send(JSON.parse(answersData));
       } else {
         getAnswers(
@@ -102,12 +100,12 @@ app.post('/qa/:product_id', (req, res) => {
   // needs to delete questions in redis for current productId
   const productId = req.params.product_id;
   const { body, name, email } = req.body;
-  addQuestion(productId, body, name, email, (err, success) => {
+  addQuestion(productId, body, name, email, (err) => {
     if (err) {
       console.log('Failed to add question', err);
       res.status(404).send();
     } else {
-      console.log('Successfully added question', success);
+      client.del(JSON.stringify(req.params));
       res.status(201).send();
     }
   });
@@ -122,7 +120,7 @@ app.post('/qa/:question_id/answers', (req, res) => {
       console.log('Failed to add answer/photos', err);
       res.status(404).send();
     } else {
-      console.log('Successfully added answer/photos');
+      client.del(JSON.stringify(req.params));
       res.status(201).send();
     }
   });
@@ -136,7 +134,7 @@ app.put('/qa/question/:question_id/helpful', (req, res) => {
       console.log('Failed to mark question as helpful', err);
       res.status(404).send('Failed to mark question as helpful');
     } else {
-      console.log('Successfully marked question as helpful');
+      client.del(JSON.stringify(req.params));
       res.status(204).send();
     }
   });
@@ -150,7 +148,7 @@ app.put('/qa/answers/:answer_id/helpful', (req, res) => {
       console.log('Failed to mark answer as helpful', err);
       res.status(404).send('Failed to mark answer as helpful');
     } else {
-      console.log('Successfully marked answer as helpful');
+      client.del(JSON.stringify(req.params));
       res.status(204).send();
     }
   });
@@ -164,7 +162,7 @@ app.put('/qa/questions/:question_id/report', (req, res) => {
       console.log('Failed to report question', err);
       res.status(404).send('Failed to report question');
     } else {
-      console.log('Successfully reported question');
+      client.del(JSON.stringify(req.params));
       res.status(204).send();
     }
   });
@@ -178,7 +176,7 @@ app.put('/qa/answers/:answer_id/report', (req, res) => {
       console.log('Failed to report answer', err);
       res.status(404).send('Failed to report answer');
     } else {
-      console.log('Successfully reported answer');
+      client.del(JSON.stringify(req.params));
       res.status(204).send();
     }
   });

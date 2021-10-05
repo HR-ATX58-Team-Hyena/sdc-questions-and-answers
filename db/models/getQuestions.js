@@ -1,11 +1,8 @@
 const { pool } = require('../index');
 
-const getQuestions = (productId, callback) => {
-  // page = 1, count = 4,
-  // const offset = page * count;
-
-  const params = [productId];
-  // , pageParam, count
+const getQuestions = (productId, page = 1, count = 4, callback) => {
+  const offset = page * count;
+  const params = [productId, offset, count];
   const questionsList = {};
   const getQuestionsQueryString = `
   SELECT
@@ -18,9 +15,9 @@ const getQuestions = (productId, callback) => {
     reported = 0
   ORDER BY
     question_helpfulness DESC
+  OFFSET $2 ROWS
+  FETCH FIRST $3 ROW ONLY
   `;
-  // OFFSET $2 ROWS
-  // FETCH FIRST $3 ROW ONLY;
 
   pool.query(getQuestionsQueryString, params, (err, questionsData) => {
     if (err) {
