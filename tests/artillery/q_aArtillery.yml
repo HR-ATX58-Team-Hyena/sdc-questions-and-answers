@@ -1,8 +1,8 @@
 config:
-  target: 'http:localhost:3000/qa'
+  target: 'http:localhost:3030/qa'
   phases:
     - duration: 60
-      arrivalRate:
+      arrivalRate: 10
       name: Get product questions
   payload:
     path: 'reports/productIds.csv'
