@@ -1,4 +1,4 @@
-// const newRelic = require('newrelic');
+require('newrelic');
 const app = require('./controllers');
 
 const port = 3030;
