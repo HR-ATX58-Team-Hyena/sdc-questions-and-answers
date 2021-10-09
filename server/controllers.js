@@ -13,6 +13,7 @@ const {
 } = require('../db/models');
 
 const client = redis.createClient();
+
 client.on('connect', () => {
   console.log('Connected to cache');
 });
@@ -22,6 +23,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.get('/loaderio-f031a480c810bd5bb9564b7156c7d06e', (req, res) => {
+  res.send('loaderio-f031a480c810bd5bb9564b7156c7d06e');
+});
 
 // get questions
 app.get('/qa/:product_id', (req, res) => {
