@@ -1,6 +1,6 @@
 # System Design Capstone
 
-## Questions and Answers API & Database
+## Questions and Answers API Service
 
 <br>
 
