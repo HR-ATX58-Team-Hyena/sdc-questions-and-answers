@@ -8,11 +8,11 @@
 <details open="open">
   <summary>Table of Contents</summary>
   <ol>
-    <li><a href="#contributors">Contributors</a></li>
+    <li><a href="#contributor">Contributor</a></li>
     <li>
-      <a href="#about-the-project">About The Project</a>
+      <a href="#project_overview">Project Overview</a>
       <ul>
-        <li><a href="#tech-stack">Built With</a></li>
+        <li><a href="#tech-stack">Tech Stack</a></li>
       </ul>
     </li>
     <li>
@@ -22,171 +22,426 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#module-break-down">Module Break Down</a></li>
+    <li><a href="#api_endpoints">API Endpoints</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
 </details>
 <br>
 
-# Overview
-
-Our team was "hired" to build out the API to support the Front End Capstone "Project Catwalk". Each member was tasked with developing one of the three API services.
-
-### Tech Stack
-
-- [Jest](https://jestjs.io)
-- [Express](https://expressjs.com/)
-- [Webpack](https://webpack.js.org/)
-
-<!-- CONTACT -->
+# Contributor
 
 ### Cory Ellerbroek - cory.ellerbroek@gmail.com
 
-<img src="READMEimages/Cory-Headshot.jpeg" alt="Photo of Cory Ellerbroek" width="80" height="80">
+<img src="READMEimages/Cory-Headshot.jpeg" alt="Cory Ellerbroek" height="150"><br>
 
 [![linkedin-shield]][cory-linkedin]
+
 [![github-shield]][cory-github]
-
-[Project Repo](https://github.com/LrBrK33/hr-atx58-fec-havarti)
-
-<a href="#product-overview">My Module: Product Overview Documentation</a>
 
 <br>
 
-# Contributors
+# Overview
+
+I was tasked to develop a RESTful API service for a mock online clothing store's "Questions and Answers" section. I was provided three csv files with millions of data points for consideration. The tech stack was completely up to me to decide and the biggest decision I had to make was which DBMS to use. I chose the PostgreSQL relational database because it would provide an ideal data structure for the imported data and I knew the queries could be tuned to respond quickly.
+
+I encountered a challenge while importing the data into the database due to a 13 digit Unix timestamp, which Postgres did not natively accept. I solved this by transforming the Unix timestamp into a Postgres readable timestamp during the ETL process.
+
+Server-side caching was implemented with Redis and brought the average response time from 50-80 ms down to 5-15 ms per request.
+
+Once the server and database were fully functioning with the front end client, I deployed the server and database on separate AWS EC2 instances. The single server could handle over 1000 requests per second without error, but the response time began to significantly increase between 700 and 800 requests per second. This is where my time on this projected ended, but my next step would have been to implement multiple server instances and a load balancer.
+
+Extensive integration, unit, and stress testing was developed locally and performed after deploying to ensure optimal functioning.
+
+<br><br>
+
+# Tech Stack
+
+HTTP Server
+
+- [Express](https://expressjs.com/)
+- [Redis](https://redis.io/)
+
+Database Management System
+
+- [PostgreSQL](https://www.postgresql.org/)
+
+Testing & Monitoring
+
+- [Jest](https://jestjs.io)
+- [SuperTest](https://github.com/visionmedia/supertest)
+- [Artillery](https://github.com/artilleryio/artillery)
+- [loader.io](https://loader.io/)
+- [New Relic](https://newrelic.com)
+
+<br><br>
 
 # API Endpoints
 
-## List Questions
+## <u>List Questions</u>
 
-Endpoint: `/qa/:product_id`
+GET Endpoint: `/qa/:product_id`
 
 Retrieves a list of questions for a particular product. This list does not include any reported questions.
 
+<br>
+
 ### <strong>Parameters</strong>
 
-> <strong>product_id</strong><br>
-> integer - Specifies the product for which to retrieve questions.<br><br> ><strong>page</strong><br>
-> integer - Selects the page of results to return. Default 1.<br><br> ><strong>count</strong><br>
-> integer - Specifies how many results per page to return. Default 5.
+<table>
+<thead>
+<tr>
+<th>Parameters</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>product_id</td>
+<td>integer</td>
+<td>Specifies the product for which to retrieve questions.</td>
+</tr>
+</tbody>
+</table>
+<br>
+
+### <strong>Query Parameters</strong>
+
+<table>
+<thead>
+<tr>
+<th>Parameters</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>page</td>
+<td>integer</td>
+<td>Selects the page of results to return. Default 1.</td>
+</tr>
+<tr>
+<td>count</td>
+<td>integer</td>
+<td>Specifies how many results per page to return. Default 5.</td>
+</tr>
+</tbody>
+</table>
+
+<br>
 
 Response Status: `200 OK`
 
 <br>
 
-## Answers List
+## <u>Answers List</u>
 
 Returns answers for a given question. This list does not include any reported answers.
 
-Endpoint: `/qa/questions/:question_id/answers`
+GET Endpoint: `/qa/questions/:question_id/answers`
+
+<br>
 
 ### <strong>Parameters</strong>
 
-> <strong>question_id</strong><br>
-> integer - Required ID of the question for which answers are needed<br>
+<table>
+<thead>
+<tr>
+<th>Parameters</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>question_id</td>
+<td>integer</td>
+<td>Required ID of the question for which answers are needed.</td>
+</tr>
+</tbody>
+</table>
+<br>
 
 ### <strong>Query Parameters</strong>
 
-> page
-> integer - Selects the page of results to return. Default 1.
-> count
-> integer - Specifies how many results per page to return. Default 5.
+<table>
+<thead>
+<tr>
+<th>Parameters</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>page</td>
+<td>integer</td>
+<td>Selects the page of results to return. Default 1.</td>
+</tr>
+<tr>
+<td>count</td>
+<td>integer</td>
+<td>Specifies how many results per page to return. Default 5.</td>
+</tr>
+</tbody>
+</table>
+
+<br>
 
 Response Status: `200 OK`
 
-## Add a Question
+<br>
 
-Adds a question for the given product
+## <u>Add a Question</u>
 
-POST /qa
+Adds a question for the given product.
 
-Body Parameters
+POST Endpoint: `/qa`
 
-body text - Text of question being asked
-name text - Username for question asker
-email text - Email address for question asker
-product_id - integer Required ID of the Product for which the question is posted
+<br>
 
-Response
+### <strong>Body Parameters</strong>
 
-Status: 201 CREATED
+<table>
+<thead>
+<tr>
+<th>Parameters</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>body</td>
+<td>text</td>
+<td>Text of question being asked.</td>
+</tr>
+<tr>
+<td>name</td>
+<td>text</td>
+<td>Username for question asker.</td>
+</tr>
+<tr>
+<td>email</td>
+<td>text</td>
+<td>Email address for question asker.</td>
+</tr>
+<tr>
+<td>product_id</td>
+<td>integer</td>
+<td>Required ID of the Product for which the question is posted.</td>
+</tr>
+</tbody>
+</table>
 
-## Add an Answer
+<br>
 
-Adds an answer for the given question
+Response Status: `201 CREATED`
 
-POST /qa/:question_id/answers
+<br>
 
-Parameters
+## <u>Add an Answer</u>
 
-question_id - integer Required ID of the question to post the answer for
+Adds an answer for the given question.
 
-Body Parameters
+POST Endpoint: `/qa/:question_id/answers`
 
-body text- Text of question being asked
-name text - Username for question asker
-email text - Email address for question asker
-photos [text] - An array of urls corresponding to images to display
+<br>
 
-Response
+### <strong>Parameters</strong>
 
-Status: 201 CREATED
+<table>
+<thead>
+<tr>
+<th>Parameters</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>question_id</td>
+<td>integer</td>
+<td>Required ID of the question being answered.</td>
+</tr>
+</tbody>
+</table>
+<br>
 
-## Mark Question as Helpful
+### <strong>Body Parameters</strong>
+
+<table>
+<thead>
+<tr>
+<th>Parameters</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>body</td>
+<td>text</td>
+<td>Text of answer.</td>
+</tr>
+<tr>
+<td>name</td>
+<td>text</td>
+<td>Username for answerer.</td>
+</tr>
+<tr>
+<td>email</td>
+<td>text</td>
+<td>Email address for answerer.</td>
+</tr>
+<tr>
+<td>photos</td>
+<td>[text]</td>
+<td>An array of urls corresponding to images to display.</td>
+</tr>
+</tbody>
+</table>
+
+<br>
+
+Response Status: `201 CREATED`
+
+<br>
+
+## <u>Mark Question as Helpful</u>
 
 Updates a question to show it was found helpful.
 
-PUT /qa/questions/:question_id/helpful
+PUT Endpoint: `/qa/questions/:question_id/helpful`
 
-Parameters
+<br>
 
-question_id - integer Required ID of the question to update
+### <strong>Parameters</strong>
 
-Response
+<table>
+<thead>
+<tr>
+<th>Parameters</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>question_id</td>
+<td>integer</td>
+<td>Required ID of the question to update.</td>
+</tr>
+</tbody>
+</table>
+<br>
 
-Status: 204 NO CONTENT
+Response Status: `204 NO CONTENT`
+
+<br>
 
 ## Report Question
 
 Updates a question to show it was reported. Note, this action does not delete the question, but the question will not be returned in the above GET request.
 
-PUT /qa/questions/:question_id/report
+PUT Endpoint: `/qa/questions/:question_id/report`
 
-Parameters
+<br>
 
-Parameter Type Description
-question_id integer Required ID of the question to update
-Response
+### <strong>Parameters</strong>
 
-Status: 204 NO CONTENT
+<table>
+<thead>
+<tr>
+<th>Parameters</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>question_id</td>
+<td>integer</td>
+<td>Required ID of the question to update.</td>
+</tr>
+</tbody>
+</table>
+<br>
 
-## Mark Answer as Helpful
+Response Status: `204 NO CONTENT`
+
+<br>
+
+## <u>Mark Answer as Helpful</u>
 
 Updates an answer to show it was found helpful.
 
-PUT /qa/answers/:answer_id/helpful
+PUT Endpoint: `/qa/answers/:answer_id/helpful`
 
-Parameters
+<br>
 
-answer_id - integer Required ID of the answer to update
-Response
+### <strong>Parameters</strong>
 
-Status: 204 NO CONTENT
+<table>
+<thead>
+<tr>
+<th>Parameters</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>answer_id</td>
+<td>integer</td>
+<td>Required ID of the answer to update.</td>
+</tr>
+</tbody>
+</table>
+<br>
 
-## Report Answer
+Response Status: `204 NO CONTENT`
+
+<br>
+
+## <u>Report Answer</u>
 
 Updates an answer to show it has been reported. Note, this action does not delete the answer, but the answer will not be returned in the above GET request.
 
-PUT /qa/answers/:answer_id/report
+PUT Endpoint: `/qa/answers/:answer_id/report`
 
-Parameters
+<br>
 
-answer_id - integer Required ID of the answer to update
-Response
+### <strong>Parameters</strong>
 
-Status: 204 NO CONTENT
+<table>
+<thead>
+<tr>
+<th>Parameters</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>answer_id</td>
+<td>integer</td>
+<td>Required ID of the answer to update.</td>
+</tr>
+</tbody>
+</table>
+<br>
 
-<!-- Contributor Links -->
+Response Status: `204 NO CONTENT`
+
+<br><br>
+
+## Acknowledgements
+
+- [Node](https://nodejs.org/)
+- [Img Shields](https://shields.io)
+- [AWS EC2](https://aws.amazon.com/ec2/?ec2-whats-new.sort-by=item.additionalFields.postDateTime&ec2-whats-new.sort-order=desc)
 
 [cory-linkedin]: https://www.linkedin.com/in/coryellerbroek/
 [cory-github]: https://github.com/LrBrK33
