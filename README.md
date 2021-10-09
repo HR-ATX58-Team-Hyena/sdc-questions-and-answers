@@ -48,9 +48,7 @@ I encountered a challenge while importing the data into the database due to a 13
 
 Server-side caching was implemented with Redis and brought the average response time from 50-80 ms down to 5-15 ms per request.
 
-Once the server and database were fully functioning with the front end client, I deployed the server and database on separate AWS EC2 instances. The single server could handle over 1000 requests per second without error, but the response time began to significantly increase between 700 and 800 requests per second. This is where my time on this projected ended, but my next step would have been to implement multiple server instances and a load balancer.
-
-Extensive integration, unit, and stress testing was developed locally and performed after deploying to ensure optimal functioning.
+Once the server and database were fully functioning with the front end client, I deployed the server and database on separate AWS EC2 instances. Extensive integration, unit, and stress testing was developed locally and performed after deploying to ensure optimal functioning. The single server could handle over 1000 requests per second without error, but the response time began to significantly increase between 700 and 800 requests per second. This is where my time on this projected ended, but my next step would have been to implement multiple server instances and a load balancer.
 
 <br><br>
 
