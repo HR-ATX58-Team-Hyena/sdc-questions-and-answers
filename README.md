@@ -10,19 +10,19 @@
   <ol>
     <li><a href="#contributor">Contributor</a></li>
     <li>
-      <a href="#project_overview">Project Overview</a>
+      <a href="#project-overview">Project Overview</a>
       <ul>
         <li><a href="#tech-stack">Tech Stack</a></li>
       </ul>
     </li>
-    <li>
+<!--     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
-    </li>
-    <li><a href="#api_endpoints">API Endpoints</a></li>
+    </li> -->
+    <li><a href="#api-endpoints">API Endpoints</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
 </details>
