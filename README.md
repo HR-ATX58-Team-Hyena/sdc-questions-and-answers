@@ -40,7 +40,7 @@
 
 <br>
 
-# Overview
+# Project Overview
 
 I was tasked to develop a RESTful API service for a mock online clothing store's "Questions and Answers" section. I was provided three csv files with millions of data points for consideration. The tech stack was completely up to me to decide and the biggest decision I had to make was which DBMS to use. I chose the PostgreSQL relational database because it would provide an ideal data structure for the imported data and I knew the queries could be tuned to respond quickly.
 
